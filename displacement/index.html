@@ -1,135 +1,139 @@
 <!DOCTYPE html>
 <html>
-    
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Project Displacement</title>
-        <meta name="description" content="An overview of Project Displacement">
-        <link rel="stylesheet" href="main.css">
-        <link rel='shortcut icon' type='image/x-icon' href='img/displacement_icon.png' />
-    </head>
-    <body>
-        <img class="title_content" src = "img/displacement_logo_large.png" width = 600></img>
-	
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Project Displacement</title>
+	<meta name="description" content="An overview of Project Displacement">
+	<link rel="stylesheet" href="main.css">
+	<link rel='shortcut icon' type='image/x-icon' href='img/displacement_icon.png' />
+</head>
+
+<body>
+	<img class="title_content" src="img/displacement_logo_large.png" width=600></img>
+
 	<p class="nav_bar">
-		<a class="nav_bar_link" href="#heading_motivation">about me</a>
+		<a class="nav_bar_link" href="#heading_about_me">about me</a>
 		<a class="nav_bar_link" href="#heading_motivation">motivation</a>
 		<a class="nav_bar_link" href="#heading_design_principles">design principles</a>
 		<a class="nav_bar_link" href="#heading_inspirations">inspirations</a>
 		<a class="nav_bar_link" href="#heading_implementation">implementation</a>
 		<a class="nav_bar_link" href="#heading_progress">progress</a>
 	</p>
-	
-    <p>Hi there. The purpose of this webpage is to give an overview of my prototype 3D space RTS game/engine, <span class="project_title_text">Displacement</span>. Since some of the features and concepts involved are better seen than described, I've put together a video that covers most aspects:</p>
-    <iframe width="7600" height="428" src="https://www.youtube.com/embed/bNyxYig0jhw" frameborder="0" allowfullscreen></iframe>
-        <h1>About me</h1>
-        <img width="200" height="200" class="byline_section" src="img/portrait_simon.png"></img>
-        <p>My name is Simon Stannus and I'm a PhD student finishing up at the University of Tasmania. My research has been in the area of 3D navigation and interaction in geo-visualisations. My final user study tested a glove-based system for 3D interaction in a head-tracked large-screen virtual reality environment. My techniques performed quite well in those tests and serve the task of interacting with geospatial data quite well; however, in the back of my mind I always had the strong desire to apply these techniques to 3D games. The last few months of waiting to hear back on the marking of my doctoral thesis have given me the perfect opportunity to do just that.</p>
-    <h1 id="heading_motivation">Motivation</h1>
-    <p>I've been a gamer for many years and I've particularly enjoyed real-time strategy games ever since I first played a demo of the original Command &amp; Conquer on Playstation. After making the move to the PC and Tiberian Sun it became hard to imagine ever having played an RTS without a mouse. Not long after that Red Alert 2 introduced me to the world of online play and single-player just didn't cut it any more. Then Emperor and C&amp;C Generals came along, with 3D models and a rotating camera that quickly made isometric games look outdated. After some detours through Warcraft III and Starcraft, I eventually eschewed my prejudice against right-click actions and found myself playing Supreme Commander. I was blown away by the sheer scale of the game and the seamless way in which dynamic zooming facilitates control at every level, not to mention countless other features such as templates, editable queues and ferrying routes. Disappointed by the direction Supreme Commander 2 took, I was glad to see Planetary Annihilation  continue SupCom's legacy of innovation, with interplanetary combat, area orders and chrono-cam all pushing the genre forward.</p>
 
-    <p>I think the burgeoning VR revolution represents the next such leap forward for RTS games. With the two titans of Facebook and Valve investing heavily in both head-mounted displays and dual 6DoF input systems, mainstream gaming will finally have platforms for proper 3D interaction. 3D RTSs such as Homeworld already exist, but the traditional mouse-keyboard-monitor paradigm makes for very clunky camera control and interaction. This project is an attempt to show what an RTS that takes full advantage of VR might look like.</p>
-    <h1 id="heading_design_principles">Design principles</h1>
-    <ul>
-        <li><strong>3D Interaction</strong><br/>
-            The humble mouse is all well and good for interacting with units on a 2D plane, but runs into problems with 3D environments. Selection is still possible using the projected coordinates of units, but players are slowed down by the extra hassle of making sure not to select distant units behind a closer intended target bunch and vice versa. Issuing move orders is even trickier; the scroll wheel or modifier key must be used to alter the third degree of positional freedom, further slowing down interaction. The solution is to use a 3D input method, allowing the player to, for example, reach behind obscuring units or pinpoint a location in 3D space with one smooth motion.
-        </li><br/>
-        <li><strong>7DoF Navigation</strong><br/>As with interaction, the camera in traditional RTS games is restricted to two dimensions. Some games add an extra degree of freedom for the camera's heading and perhaps another for the angle of elevation from the ground. Zoom also represents a further degree of freedom, bringing the total to 5 (2 for position, 2 for orientation and 1 for zoom). On first glance, a game like Homeworld ups this to 7 degrees of freedom (3 for position, 3 for orientation and 1 for zoom); however this kind of zoom is no different from moving the camera closer to or further from its target, making it just a specific case of positional movement. In a VR environment, instead of a fixed frustum mapping to a virtual camera, you have a transformation representing the mapping between the real and virtual coordinate spaces in which this conventional positional zoom doesn't make sense. However, without projective interaction there is no way to easily deal with collections of units across at various levels of scale; some units might be millimetres apart in real world coordinates while others are separated by metres. The solution is to allow the scale relationship between the two coordinate spaces to be just as adjustable as the positional and orientational ones.</li><br/>
-        <li><strong>Minimal Abstraction</strong><br/>
-            I am of the firm belief that abstraction should be avoided as much as possible in games. One of the reasons I quite like Supreme Commander is that projectiles are properly simulated, allowing players to actively dodge incoming rounds or jump expendable units into the line of fire to save their higher value ones. Suddenly the range at which the enemy battleship is firing becomes crucial, as does the turning speed of your battleship as you struggle to present the smallest profile before the barrage closes the distance. Pushing the abstraction to low levels like this makes for a more realistic experience and allows certain properties (evasion, in this example) to be derived from other properties in a way that still depends on the skill of the player. Lesser games would abstract such dependent properties into predefined constants that combine with random number generation to mimic this behaviour, but in my mind that is a move away from the cutting edge of technology and back toward the realm of character sheets and D20 rolls.
-        </li><br/>
-        <li><strong>Newtonian Physics</strong><br/>
-            Space is space. While we are accustomed to terrestrial RTS games where units have a set speed at which they move, in space there is no atmospheric drag to constrain velocity. Instead of speed, units are differentiated by the rate at which they accelerate. Assuming no fuel economics, a unit will ideally accelerate constantly to reach their target, initially in the direction of their target and finally in the reverse direction to kill their velocity by the time they reach it. In some situations, velocity limits may arise, such as flying through regular asteroid fields of a certain granularity, but this is another example of high-level behaviour deriving from lower-level systems (in this case path-finding and collision-avoidance) rather than artificial abstractions.
-        </li><br/>
-        <li><strong>Distributed Networking</strong><br/>
-            As with most modern RTS games, my engine uses a deterministic lock-step model to run its underlying simulation. This has two main advantages; there is no need for a central server and network traffic is reduced to just the orders that each player issues (and I'm doing further compression on those by caching past selection groups).
-            The first point is important to both me as a developer and also any potential community of players. The costs involved in maintaining servers are a financial burden I can do without and depending on them leaves the entire community vulnerable to a single point of failure (be that downtime or end of support).
-            The second point is coloured by my experiences hitting the bandwidth wall playing in a centrally-simulated RTS and watching in frustration as the positions of the units updated in a manner alarmingly like that of a slow paper printout, usually as an opponent's blob of death converged on my base. What makes such a problem frustrating is the suspicion that you're being penalised for your geographical remoteness and that your opponent may purposefully trigger such a problem by over-producing cheap spam if he suspects he has the better bandwidth. A distributed approach doesn't have this problem, though it is constrained by the slowest CPU among the set of players; however this degradation effects all players equally, regardless of machine specs and the vagaries of transnational routing.
-        </li><br/>
-        <li><strong>Flexibility</strong><br/>
-            Before my programming abilities had advanced much further than QBasic, I enjoyed dabbling with customising units in TS and RA2. This gave me an appreciation of the power of easy text customisation and roughly inspired the design of my rule parsing system.
-        </li><br/>
-    </ul>
-    <h1 id="heading_inspirations">Inspirations</h1>
-        As an avid player of games and consumer of all things sci-fi, I thought I should mentions some of my inspirations :
-        <ul>
-            <li><strong>Battlestar Galactica</strong> for its portrayal of RCS mechanics</li>
-            <li><strong>Elite: Dangerous</strong> for showing how beautiful space can be in VR</li>
-            <li><strong>Firefly</strong> for just generally being awesome</li>
-            <li><strong>Homeworld</strong> for pioneering 3D RTS</li>
-            <li><strong>Planetary Annihilation</strong> for area commands and Chrono-Cam</li>
-            <li><strong>Supreme Commander</strong> for dynamic zoom and proper game simulation</li>
-            <li><strong>Zones of Thought series</strong> for capturing the essence of space across so many scales of space and time</li>
-        </ul>
-    </body>
-    <h1 id="heading_implementation">Implementation</h1>
-    I used Unity and its Oculus plugin for my initial navigation proof of concept, but my current development is in Java. This makes my engine something of an oddity in the gaming arena where C++ reigns supreme, but it makes sense for a number of reasons:
-        <ul>
-            <li>
-                Its exacting spec. (especially <em>strictfp</em> arithmetic) makes porting and ensuring deterministic calculation easier
-            </li>
-            <li>
-                Its reflection capabilities mean that there is zero boilerplate for loading text variables
-            </li>
-            <li>
-                ObjectInputStream and ObjectOutputStream make serialisation easy.
-            </li>
-            <li>
-                Snappy compilation; a full clean-and-build on my 7000 or so lines of code across 100+ classes takes around 5 seconds
-            </li>
-            <li>
-                Much more semantically-aware and robust editing tools (in the form of Netbeans)
-            </li>
-            <li>
-                Easy library management with Maven
-            </li>
-        </ul>
-        Rendering is done in modern OpenGL with my own mix of basic shaders and I make use of the following libraries:
-        <ul>
-            <li>
-                <strong>LWJGL 3</strong> <em>(Java and native binaries)</em> for the OpenGL bindings
-            </li>
-            <li>
-                <strong>JOML</strong> <em>(pure Java)</em> for vector maths
-            </li>
-            <li>
-                <strong>oObjLoader</strong> and <strong>PNGDecoder</strong> <em>(pure Java)</em> for loading of models and images
-            </li>
-            <li>
-                <strong>Sixense-Java</strong> <em>(Java and native binaries)</em> for access to the Razer Hydra
-            </li>
-        </ul>
-    <h1 id="heading_progress">Progress</h1>
-Below is a rough estimate of the progress I have made in the various components of the project. The bars represent the approximate percentage of required raw code written so far. Additionally, functional components are shown in <span class="code_status_functional">&nbsp;green&nbsp;</span>, components with non-trivial bugs are shown in <span class="code_status_some_bugs">&nbsp;orange&nbsp;</span> and untested components are shown in <span class="code_status_untested">&nbsp;grey&nbsp;</span>.
-    <div class="progress_chart">
-        <div><span class="progress_caption">Lobby</span> <span class="progress_bar code_completion_most code_status_some_bugs"></span></div>
-        <div><span class="progress_caption">Core</span> <span class="progress_bar code_completion_half code_status_functional"></span></div>
-        <div><span class="progress_caption">Rules &amp; Types</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
-        <div><span class="progress_caption">Execution Cycle</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
+	<p>Hi there. The purpose of this webpage is to give an overview of my prototype 3D space RTS game/engine, <span class="project_title_text">Displacement</span>. Since some of the features and concepts involved are better seen than described, I've put together a video that covers most aspects:</p>
+	<iframe width="760" height="428" src="https://www.youtube.com/embed/bNyxYig0jhw" frameborder="0" allowfullscreen></iframe>
+	<h1 id="heading_about_me">About me</h1>
+	<img width="200" height="200" class="byline_section" src="img/portrait_simon.png"></img>
+	<p>My name is Simon Stannus and I'm a PhD student finishing up at the University of Tasmania. My research has been in the area of 3D navigation and interaction in geo-visualisations. My final user study tested a glove-based system for 3D interaction in a head-tracked large-screen virtual reality environment. My techniques performed quite well in those tests and serve the task of interacting with geospatial data quite well; however, in the back of my mind I always had the strong desire to apply these techniques to 3D games. The last few months of waiting to hear back on the marking of my doctoral thesis have given me the perfect opportunity to do just that.</p>
+	<h1 id="heading_motivation">Motivation</h1>
+	<p>I've been a gamer for many years and I've particularly enjoyed real-time strategy games ever since I first played a demo of the original Command &amp; Conquer on Playstation. After making the move to the PC and Tiberian Sun it became hard to imagine ever having played an RTS without a mouse. Not long after that Red Alert 2 introduced me to the world of online play and single-player just didn't cut it any more. Then Emperor and C&amp;C Generals came along, with 3D models and a rotating camera that quickly made isometric games look outdated. After some detours through Warcraft III and Starcraft, I eventually eschewed my prejudice against right-click actions and found myself playing Supreme Commander. I was blown away by the sheer scale of the game and the seamless way in which dynamic zooming facilitates control at every level, not to mention countless other features such as templates, editable queues and ferrying routes. Disappointed by the direction Supreme Commander 2 took, I was glad to see Planetary Annihilation continue SupCom's legacy of innovation, with interplanetary combat, area orders and chrono-cam all pushing the genre forward.</p>
 
-        <div><span class="progress_caption">Game Model</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
-        <div><span class="progress_caption">Unit Model</span> <span class="progress_bar code_completion_some code_status_functional"></span></div>
-        <div><span class="progress_caption">Emplacement Model</span> <span class="progress_bar code_completion_none code_status_untested"></span></div>
-        <div><span class="progress_caption">Weapon Model</span> <span class="progress_bar code_completion_none code_status_untested"></span></div>
-        <div><span class="progress_caption">Projectile Model</span> <span class="progress_bar code_completion_none code_status_untested"></span></div>
-        <div><span class="progress_caption">Payload Model</span> <span class="progress_bar code_completion_none code_status_untested"></span></div>
-        <div><span class="progress_caption">Environment Model</span> <span class="progress_bar code_completion_none code_status_untested"></span></div>
+	<p>I think the burgeoning VR revolution represents the next such leap forward for RTS games. With the two titans of Facebook and Valve investing heavily in both head-mounted displays and dual 6DoF input systems, mainstream gaming will finally have platforms for proper 3D interaction. 3D RTSs such as Homeworld already exist, but the traditional mouse-keyboard-monitor paradigm makes for very clunky camera control and interaction. This project is an attempt to show what an RTS that takes full advantage of VR might look like.</p>
+	<h1 id="heading_design_principles">Design principles</h1>
+	<ul>
+		<li><strong>3D Interaction</strong>
+			<br/> The humble mouse is all well and good for interacting with units on a 2D plane, but runs into problems with 3D environments. Selection is still possible using the projected coordinates of units, but players are slowed down by the extra hassle of making sure not to select distant units behind a closer intended target bunch and vice versa. Issuing move orders is even trickier; the scroll wheel or modifier key must be used to alter the third degree of positional freedom, further slowing down interaction. The solution is to use a 3D input method, allowing the player to, for example, reach behind obscuring units or pinpoint a location in 3D space with one smooth motion.
+		</li>
+		<br/>
+		<li><strong>7DoF Navigation</strong>
+			<br/>As with interaction, the camera in traditional RTS games is restricted to two dimensions. Some games add an extra degree of freedom for the camera's heading and perhaps another for the angle of elevation from the ground. Zoom also represents a further degree of freedom, bringing the total to 5 (2 for position, 2 for orientation and 1 for zoom). On first glance, a game like Homeworld ups this to 7 degrees of freedom (3 for position, 3 for orientation and 1 for zoom); however this kind of zoom is no different from moving the camera closer to or further from its target, making it just a specific case of positional movement. In a VR environment, instead of a fixed frustum mapping to a virtual camera, you have a transformation representing the mapping between the real and virtual coordinate spaces in which this conventional positional zoom doesn't make sense. However, without projective interaction there is no way to easily deal with collections of units across at various levels of scale; some units might be millimetres apart in real world coordinates while others are separated by metres. The solution is to allow the scale relationship between the two coordinate spaces to be just as adjustable as the positional and orientational ones.</li>
+		<br/>
+		<li><strong>Minimal Abstraction</strong>
+			<br/> I am of the firm belief that abstraction should be avoided as much as possible in games. One of the reasons I quite like Supreme Commander is that projectiles are properly simulated, allowing players to actively dodge incoming rounds or jump expendable units into the line of fire to save their higher value ones. Suddenly the range at which the enemy battleship is firing becomes crucial, as does the turning speed of your battleship as you struggle to present the smallest profile before the barrage closes the distance. Pushing the abstraction to low levels like this makes for a more realistic experience and allows certain properties (evasion, in this example) to be derived from other properties in a way that still depends on the skill of the player. Lesser games would abstract such dependent properties into predefined constants that combine with random number generation to mimic this behaviour, but in my mind that is a move away from the cutting edge of technology and back toward the realm of character sheets and D20 rolls.
+		</li>
+		<br/>
+		<li><strong>Newtonian Physics</strong>
+			<br/> Space is space. While we are accustomed to terrestrial RTS games where units have a set speed at which they move, in space there is no atmospheric drag to constrain velocity. Instead of speed, units are differentiated by the rate at which they accelerate. Assuming no fuel economics, a unit will ideally accelerate constantly to reach their target, initially in the direction of their target and finally in the reverse direction to kill their velocity by the time they reach it. In some situations, velocity limits may arise, such as flying through regular asteroid fields of a certain granularity, but this is another example of high-level behaviour deriving from lower-level systems (in this case path-finding and collision-avoidance) rather than artificial abstractions.
+		</li>
+		<br/>
+		<li><strong>Distributed Networking</strong>
+			<br/> As with most modern RTS games, my engine uses a deterministic lock-step model to run its underlying simulation. This has two main advantages; there is no need for a central server and network traffic is reduced to just the orders that each player issues (and I'm doing further compression on those by caching past selection groups). The first point is important to both me as a developer and also any potential community of players. The costs involved in maintaining servers are a financial burden I can do without and depending on them leaves the entire community vulnerable to a single point of failure (be that downtime or end of support). The second point is coloured by my experiences hitting the bandwidth wall playing in a centrally-simulated RTS and watching in frustration as the positions of the units updated in a manner alarmingly like that of a slow paper printout, usually as an opponent's blob of death converged on my base. What makes such a problem frustrating is the suspicion that you're being penalised for your geographical remoteness and that your opponent may purposefully trigger such a problem by over-producing cheap spam if he suspects he has the better bandwidth. A distributed approach doesn't have this problem, though it is constrained by the slowest CPU among the set of players; however this degradation effects all players equally, regardless of machine specs and the vagaries of transnational routing.
+		</li>
+		<br/>
+		<li><strong>Flexibility</strong>
+			<br/> Before my programming abilities had advanced much further than QBasic, I enjoyed dabbling with customising units in TS and RA2. This gave me an appreciation of the power of easy text customisation and roughly inspired the design of my rule parsing system.
+		</li>
+		<br/>
+	</ul>
+	<h1 id="heading_inspirations">Inspirations</h1> As an avid player of games and consumer of all things sci-fi, I thought I should mentions some of my inspirations :
+	<ul>
+		<li><strong>Battlestar Galactica</strong> for its portrayal of RCS mechanics</li>
+		<li><strong>Elite: Dangerous</strong> for showing how beautiful space can be in VR</li>
+		<li><strong>Firefly</strong> for just generally being awesome</li>
+		<li><strong>Homeworld</strong> for pioneering 3D RTS</li>
+		<li><strong>Planetary Annihilation</strong> for area commands and Chrono-Cam</li>
+		<li><strong>Supreme Commander</strong> for dynamic zoom and proper game simulation</li>
+		<li><strong>Zones of Thought series</strong> for capturing the essence of space across so many scales of space and time</li>
+	</ul>
+	<h1 id="heading_implementation">Implementation</h1> I used Unity and its Oculus plugin for my initial navigation proof of concept, but my current development is in Java. This makes my engine something of an oddity in the gaming arena where C++ reigns supreme, but it makes sense for a number of reasons:
+	<ul>
+		<li>
+			Its exacting spec. (especially <em>strictfp</em> arithmetic) makes porting and ensuring deterministic calculation easier
+		</li>
+		<li>
+			Its reflection capabilities mean that there is zero boilerplate for loading text variables
+		</li>
+		<li>
+			ObjectInputStream and ObjectOutputStream make serialisation easy.
+		</li>
+		<li>
+			Snappy compilation; a full clean-and-build on my 7000 or so lines of code across 100+ classes takes around 5 seconds
+		</li>
+		<li>
+			Much more semantically-aware and robust editing tools (in the form of Netbeans)
+		</li>
+		<li>
+			Easy library management with Maven
+		</li>
+	</ul>
+	Rendering is done in modern OpenGL with my own mix of basic shaders and I make use of the following libraries:
+	<ul>
+		<li>
+			<strong>LWJGL 3</strong> <em>(Java and native binaries)</em> for the OpenGL bindings
+		</li>
+		<li>
+			<strong>JOML</strong> <em>(pure Java)</em> for vector maths
+		</li>
+		<li>
+			<strong>oObjLoader</strong> and <strong>PNGDecoder</strong> <em>(pure Java)</em> for loading of models and images
+		</li>
+		<li>
+			<strong>Sixense-Java</strong> <em>(Java and native binaries)</em> for access to the Razer Hydra
+		</li>
+	</ul>
+	<h1 id="heading_progress">Progress</h1> Below is a rough estimate of the progress I have made in the various components of the project. The bars represent the approximate percentage of required raw code written so far. Additionally, functional components are shown in <span class="code_status_functional">&nbsp;green&nbsp;</span>, components with non-trivial bugs are shown in <span class="code_status_some_bugs">&nbsp;orange&nbsp;</span> and untested components are shown in <span class="code_status_untested">&nbsp;grey&nbsp;</span>.
+	<div class="progress_chart">
+		<div><span class="progress_caption">Lobby</span> <span class="progress_bar code_completion_most code_status_some_bugs"></span></div>
+		<div><span class="progress_caption">Core</span> <span class="progress_bar code_completion_half code_status_functional"></span></div>
+		<div><span class="progress_caption">Rules &amp; Types</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
+		<div><span class="progress_caption">Execution Cycle</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
 
-        <div><span class="progress_caption">Network</span> <span class="progress_bar code_completion_most code_status_untested"></span></div>
-        <div><span class="progress_caption">Chat</span> <span class="progress_bar code_completion_some code_status_untested"></span></div>
-        <div><span class="progress_caption">Orders</span> <span class="progress_bar code_completion_some code_status_functional"></span></div>
-        <div><span class="progress_caption">Voting</span> <span class="progress_bar code_completion_some code_status_untested"></span></div>
+		<div><span class="progress_caption">Game Model</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
+		<div><span class="progress_caption">Unit Model</span> <span class="progress_bar code_completion_some code_status_functional"></span></div>
+		<div><span class="progress_caption">Emplacement Model</span> <span class="progress_bar code_completion_none code_status_untested"></span></div>
+		<div><span class="progress_caption">Weapon Model</span> <span class="progress_bar code_completion_none code_status_untested"></span></div>
+		<div><span class="progress_caption">Projectile Model</span> <span class="progress_bar code_completion_none code_status_untested"></span></div>
+		<div><span class="progress_caption">Payload Model</span> <span class="progress_bar code_completion_none code_status_untested"></span></div>
+		<div><span class="progress_caption">Environment Model</span> <span class="progress_bar code_completion_none code_status_untested"></span></div>
 
-        <div><span class="progress_caption">Input (Abstract)</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
-        <div class="indent_level_1"><span class="progress_caption">Hydra Input</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
-        <div class="indent_level_1"><span class="progress_caption">Oculus Input</span> <span class="progress_bar code_completion_none code_status_functional"></span></div>
-        <div class="indent_level_1"><span class="progress_caption">Vive Input</span> <span class="progress_bar code_completion_none code_status_functional"></span></div>
+		<div><span class="progress_caption">Network</span> <span class="progress_bar code_completion_most code_status_untested"></span></div>
+		<div><span class="progress_caption">Chat</span> <span class="progress_bar code_completion_some code_status_untested"></span></div>
+		<div><span class="progress_caption">Orders</span> <span class="progress_bar code_completion_some code_status_functional"></span></div>
+		<div><span class="progress_caption">Voting</span> <span class="progress_bar code_completion_some code_status_untested"></span></div>
 
-        <div><span class="progress_caption">View (Abstract)</span> <span class="progress_bar code_completion_all code_status_functional"></span></div>
-        <div class="indent_level_1"><span class="progress_caption">Diagnostic View</span> <span class="progress_bar code_completion_some code_status_functional"></span></div>
-        <div class="indent_level_1"><span class="progress_caption">OpenGL View</span> <span class="progress_bar code_completion_half code_status_functional"></span></div>
-        <div class="indent_level_2"><span class="progress_caption">Vertex Formatting</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
-        <div class="indent_level_1"><span class="progress_caption">3D Models</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
-    </div>
+		<div><span class="progress_caption">Input (Abstract)</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
+		<div class="indent_level_1"><span class="progress_caption">Hydra Input</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
+		<div class="indent_level_1"><span class="progress_caption">Oculus Input</span> <span class="progress_bar code_completion_none code_status_functional"></span></div>
+		<div class="indent_level_1"><span class="progress_caption">Vive Input</span> <span class="progress_bar code_completion_none code_status_functional"></span></div>
+
+		<div><span class="progress_caption">View (Abstract)</span> <span class="progress_bar code_completion_all code_status_functional"></span></div>
+		<div class="indent_level_1"><span class="progress_caption">Diagnostic View</span> <span class="progress_bar code_completion_some code_status_functional"></span></div>
+		<div class="indent_level_1"><span class="progress_caption">OpenGL View</span> <span class="progress_bar code_completion_half code_status_functional"></span></div>
+		<div class="indent_level_2"><span class="progress_caption">Vertex Formatting</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
+		<div class="indent_level_1"><span class="progress_caption">3D Models</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
+	</div>
+</body>
+
 </html>
