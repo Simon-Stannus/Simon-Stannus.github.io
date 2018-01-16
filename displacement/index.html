@@ -22,11 +22,25 @@
 		<a class="nav_bar_link" href="#heading_progress">progress</a>
 	</p>
 
-	<p>Hi there. The purpose of this webpage is to give an overview of my prototype 3D space RTS game/engine, <span class="project_title_text">Displacement</span>. Since some of the features and concepts involved are better seen than described, I've put together a video that covers most aspects:</p>
-	<iframe width="760" height="428" src="https://www.youtube.com/embed/bNyxYig0jhw" frameborder="0" allowfullscreen></iframe>
+	<p>Hi there. The purpose of this webpage is to introduce my prototype 3D space RTS game, <span class="project_title_text">Displacement</span>.</p>
 	<h1 id="heading_about_me">About me</h1>
-	<img width="200" height="200" class="byline_section" src="img/portrait_simon.png"></img>
-	<p>My name is Simon Stannus and I'm a PhD student finishing up at the University of Tasmania. My research has been in the area of 3D navigation and interaction in geo-visualisations. My final user study tested a glove-based system for 3D interaction in a head-tracked large-screen virtual reality environment. My techniques performed quite well in those tests and serve the task of interacting with geospatial data quite well; however, in the back of my mind I always had the strong desire to apply these techniques to 3D games. The last few months of waiting to hear back on the marking of my doctoral thesis have given me the perfect opportunity to do just that.</p>
+	<img width="125" height="125" class="byline_section" src="img/portrait_simon.png"></img>
+	<p>My name is Simon Stannus and I'm a Australian software engineer specialising in virtual and mixed reality, currently working in that field in the US. I started working on this project while waiting to have my PhD dissertation on 3D navigation and interaction in geo-visualisations graded. While both this research and my subsequent work in industry have been rewarding in their own ways, in the back of my mind I have always had the strong desire to apply these techniques to 3D games.</p>
+	
+	<h1 id="heading_update_3">Update 3: <span class="heading_right_subtitle">Lobby UI</span></h1>
+	<p>After a long hiatus, I've continued development by starting work on a potentially separate lobby client program. Watch the update video below for more information:</p>
+	<iframe width="760" height="428" src="https://www.youtube.com/embed/tP0LB1hQH_I?rel=0" frameborder="0" allowfullscreen></iframe>
+	
+	<h1 id="heading_update_2">Update 2: <span class="heading_right_subtitle">On Topology</span></h1>
+	<p>Motivated to keep the existing simulation engine while opening up the possibility of using 3rd party engines to handle rendering, I have decided to separate out the UI from the core engine entirely. The plan will be to develop a new interface in a modern game engine (probably Unity initially) and connect it to the simulation engine via TCP. While this may seem like a strange design choice for a peer-to-peer RTS game, it opens up some interesting possibilities.</p>
+	<p>One of the main issues with peer-to-peer RTS games is the crippling effect that a single player with a slow CPU can bring to a match. Some titles have addressed this by doing all simulation on a central cloud server and sending unit positions and states rather than orders to each player. My plan is to give players the choice of whether or not they want to run their own simulation client or connect to one remotely, allowing arbitrary topologies that can be optimised according to the CPU or network constraints of individual players. The diagram below illustrates the flexibility of this approach:</p>
+	<img width="760" height="639" src="img/displacement_network_architecture.png"></img>
+	
+	<h1 id="heading_update_1">Update 1: <span class="heading_right_subtitle">Initial Prototype</span></h1>
+	<p>The video below shows an initial prototype version of the game engine and the ideas behind its design:</p>
+	<iframe width="760" height="428" src="https://www.youtube.com/embed/bNyxYig0jhw?rel=0" frameborder="0" allowfullscreen></iframe>
+	
+	
 	<h1 id="heading_motivation">Motivation</h1>
 	<p>I've been a gamer for many years and I've particularly enjoyed real-time strategy games ever since I first played a demo of the original Command &amp; Conquer on Playstation. After making the move to the PC and Tiberian Sun it became hard to imagine ever having played an RTS without a mouse. Not long after that Red Alert 2 introduced me to the world of online play and single-player just didn't cut it any more. Then Emperor and C&amp;C Generals came along, with 3D models and a rotating camera that quickly made isometric games look outdated. After some detours through Warcraft III and Starcraft, I eventually eschewed my prejudice against right-click actions and found myself playing Supreme Commander. I was blown away by the sheer scale of the game and the seamless way in which dynamic zooming facilitates control at every level, not to mention countless other features such as templates, editable queues and ferrying routes. Disappointed by the direction Supreme Commander 2 took, I was glad to see Planetary Annihilation continue SupCom's legacy of innovation, with interplanetary combat, area orders and chrono-cam all pushing the genre forward.</p>
 
@@ -67,73 +81,7 @@
 		<li><strong>Supreme Commander</strong> for dynamic zoom and proper game simulation</li>
 		<li><strong>Zones of Thought series</strong> for capturing the essence of space across so many scales of space and time</li>
 	</ul>
-	<h1 id="heading_implementation">Implementation</h1> I used Unity and its Oculus plugin for my initial navigation proof of concept, but my current development is in Java. This makes my engine something of an oddity in the gaming arena where C++ reigns supreme, but it makes sense for a number of reasons:
-	<ul>
-		<li>
-			Its exacting spec. (especially <em>strictfp</em> arithmetic) makes porting and ensuring deterministic calculation easier
-		</li>
-		<li>
-			Its reflection capabilities mean that there is zero boilerplate for loading text variables
-		</li>
-		<li>
-			ObjectInputStream and ObjectOutputStream make serialisation easy.
-		</li>
-		<li>
-			Snappy compilation; a full clean-and-build on my 7000 or so lines of code across 100+ classes takes around 5 seconds
-		</li>
-		<li>
-			Much more semantically-aware and robust editing tools (in the form of Netbeans)
-		</li>
-		<li>
-			Easy library management with Maven
-		</li>
-	</ul>
-	Rendering is done in modern OpenGL with my own mix of basic shaders and I make use of the following libraries:
-	<ul>
-		<li>
-			<strong>LWJGL 3</strong> <em>(Java and native binaries)</em> for the OpenGL bindings
-		</li>
-		<li>
-			<strong>JOML</strong> <em>(pure Java)</em> for vector maths
-		</li>
-		<li>
-			<strong>oObjLoader</strong> and <strong>PNGDecoder</strong> <em>(pure Java)</em> for loading of models and images
-		</li>
-		<li>
-			<strong>Sixense-Java</strong> <em>(Java and native binaries)</em> for access to the Razer Hydra
-		</li>
-	</ul>
-	<h1 id="heading_progress">Progress</h1> Below is a rough estimate of the progress I have made in the various components of the project. The bars represent the approximate percentage of required raw code written so far. Additionally, functional components are shown in <span class="code_status_functional">&nbsp;green&nbsp;</span>, components with non-trivial bugs are shown in <span class="code_status_some_bugs">&nbsp;orange&nbsp;</span> and untested components are shown in <span class="code_status_untested">&nbsp;grey&nbsp;</span>.
-	<div class="progress_chart">
-		<div><span class="progress_caption">Lobby</span> <span class="progress_bar code_completion_most code_status_some_bugs"></span></div>
-		<div><span class="progress_caption">Core</span> <span class="progress_bar code_completion_half code_status_functional"></span></div>
-		<div><span class="progress_caption">Rules &amp; Types</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
-		<div><span class="progress_caption">Execution Cycle</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
-
-		<div><span class="progress_caption">Game Model</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
-		<div><span class="progress_caption">Unit Model</span> <span class="progress_bar code_completion_some code_status_functional"></span></div>
-		<div><span class="progress_caption">Emplacement Model</span> <span class="progress_bar code_completion_none code_status_untested"></span></div>
-		<div><span class="progress_caption">Weapon Model</span> <span class="progress_bar code_completion_none code_status_untested"></span></div>
-		<div><span class="progress_caption">Projectile Model</span> <span class="progress_bar code_completion_none code_status_untested"></span></div>
-		<div><span class="progress_caption">Payload Model</span> <span class="progress_bar code_completion_none code_status_untested"></span></div>
-		<div><span class="progress_caption">Environment Model</span> <span class="progress_bar code_completion_none code_status_untested"></span></div>
-
-		<div><span class="progress_caption">Network</span> <span class="progress_bar code_completion_most code_status_untested"></span></div>
-		<div><span class="progress_caption">Chat</span> <span class="progress_bar code_completion_some code_status_untested"></span></div>
-		<div><span class="progress_caption">Orders</span> <span class="progress_bar code_completion_some code_status_functional"></span></div>
-		<div><span class="progress_caption">Voting</span> <span class="progress_bar code_completion_some code_status_untested"></span></div>
-
-		<div><span class="progress_caption">Input (Abstract)</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
-		<div class="indent_level_1"><span class="progress_caption">Hydra Input</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
-		<div class="indent_level_1"><span class="progress_caption">Oculus Input</span> <span class="progress_bar code_completion_none code_status_functional"></span></div>
-		<div class="indent_level_1"><span class="progress_caption">Vive Input</span> <span class="progress_bar code_completion_none code_status_functional"></span></div>
-
-		<div><span class="progress_caption">View (Abstract)</span> <span class="progress_bar code_completion_all code_status_functional"></span></div>
-		<div class="indent_level_1"><span class="progress_caption">Diagnostic View</span> <span class="progress_bar code_completion_some code_status_functional"></span></div>
-		<div class="indent_level_1"><span class="progress_caption">OpenGL View</span> <span class="progress_bar code_completion_half code_status_functional"></span></div>
-		<div class="indent_level_2"><span class="progress_caption">Vertex Formatting</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
-		<div class="indent_level_1"><span class="progress_caption">3D Models</span> <span class="progress_bar code_completion_most code_status_functional"></span></div>
-	</div>
+	
 </body>
 
 </html>
